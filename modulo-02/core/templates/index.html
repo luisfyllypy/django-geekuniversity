@@ -1,0 +1,65 @@
+{% load bootstrap4 %}  {# Carrega as tags do Bootstrap 4 para usar CSS e JS do Bootstrap via template tags #}
+{% load static %}      {# Carrega a tag "static" para usar arquivos estáticos como CSS e imagens #}
+<!DOCTYPE html>        {# Declara o tipo do documento como HTML5 #}
+<html lang="pt-br">    {# Define o idioma da página como português do Brasil #}
+<head>
+    <meta charset="UTF-8">  {# Define a codificação de caracteres como UTF-8 #}
+    <title>Index</title>    {# Define o título da página (aparece na aba do navegador) #}
+
+    {% bootstrap_css %}     {# Insere o link para o CSS do Bootstrap 4 #}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  {# Link para um arquivo CSS personalizado do projeto #}
+</head>
+<body>
+    <div class="container">  {# Container do Bootstrap para centralizar e aplicar margens responsivas ao conteúdo #}
+        <h1>Produtos</h1>    {# Título principal da página #}
+
+        <table class="table table-dark">  {# Tabela com estilo escuro do Bootstrap #}
+            <thead>                         {# Cabeçalho da tabela #}
+                <tr>
+                    <th scope="col">#</th>           {# Coluna para o ID ou número do item #}
+                    <th scope="col">Produto</th>     {# Coluna com o nome do produto #}
+                    <th scope="col">Preço</th>       {# Coluna com o preço do produto #}
+                    <th scope="col">Estoque</th>     {# Coluna com a quantidade em estoque #}
+                </tr>
+            </thead>
+            <tbody>
+            {% for produto in produtos %}  {# Início do loop que percorre todos os produtos recebidos do backend #}
+                <tr>
+                    <td scope="row">{{ produto.id }}</td>   {# Exibe o ID do produto #}
+                    <td scope="row">
+                        <a href="#modal{{ produto.id }}" data-toggle="modal">
+                            {{ produto.nome }}             {# Nome do produto como link que abre o modal correspondente #}
+                        </a>
+                    </td>
+                    <td scope="row">{{ produto.preco }}</td>     {# Exibe o preço do produto #}
+                    <td scope="row">{{ produto.estoque }}</td>   {# Exibe o estoque do produto #}
+                </tr>
+
+                <!-- Modal de visualização da imagem do produto -->
+                <div class="modal fade bd-example-modal-lg show" id="modal{{produto.id}}" role="dialog">
+                    <div class="modal-dialog">                   {# Container do modal #}
+                        <div class="modal-content">              {# Conteúdo do modal #}
+                            <!-- Cabeçalho do modal com botão de fechar -->
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">
+                                    <span aria-hidden="true">&times;</span>  {# Ícone de "X" para fechar #}
+                                </button>
+                            </div>
+                            <!-- Corpo do modal com a imagem do produto -->
+                            <div class="modal-body" id="dynamic-content">
+                                <img src="{{ produto.imagem.url }}" class="img-fluid" alt="{{ produto.nome }}">
+                                {# Exibe a imagem do produto, com redimensionamento automático e texto alternativo #}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% endfor %} {# Fim do loop dos produtos #}
+            </tbody>
+        </table>
+        <a class="btn btn-primary float-right" href="{% url 'contato' %}" role="button">Contato</a>
+    </div>
+
+    {% bootstrap_javascript jquery='full' %}  {# Inclui o JavaScript do Bootstrap e do jQuery (requerido para modais) #}
+</body>
+</html>
