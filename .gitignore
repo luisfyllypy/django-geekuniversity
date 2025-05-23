@@ -5,3 +5,11 @@ __pycache__
 *.pyc
 
 .idea
+
+template/*
+
+htmlcov/*
+
+*.coverage
+
+*.coveragerc

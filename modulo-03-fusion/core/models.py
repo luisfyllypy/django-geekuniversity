@@ -60,3 +60,6 @@ class Funcionario(Base):
     class Meta:
         verbose_name = 'Funcionário'
         verbose_name_plural = 'Funcionários'
+
+    def __str__(self):
+        return self.nome
